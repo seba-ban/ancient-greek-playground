@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "ancient-greek-playground"
+version = "0.1.0"
+description = ""
+authors = ["Sebastian Banaszkiewicz <banaszkiewicz.sebastian@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+lxml = "^4.9.3"
+gitpython = "^3.1.40"
+tqdm = "^4.66.1"
+beta-code = "^1.1.0"
+
+[tool.poetry.group.dev.dependencies]
+spacy = "^3.7.2"
+black = "^23.11.0"
+isort = "^5.12.0"
+pytest = "^7.4.3"
+jupyter = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+
+[tool.poe.tasks]
+format = [
+    { cmd = "isort ancient_greek_playground tests" },
+    { cmd = "black ancient_greek_playground tests" },
+]
+test = [
+    { cmd = "pytest tests" },
+]
+download_greek_lit = [
+    { script = "ancient_greek_playground:download_canonical_greek_lit()" },
+]
+build_greek_lit = [
+    "download_greek_lit",
+    { script = "os:makedirs('.tmp/xar', exist_ok=True)" },
+    { cmd = "./hack/build_greek_lit_ant.sh .tmp/repos/canonical-greekLit .tmp/xar hack/_build_greek_lit_ant.sh" },
+]
