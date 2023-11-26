@@ -11,6 +11,7 @@ lxml = "^4.9.3"
 gitpython = "^3.1.40"
 tqdm = "^4.66.1"
 beta-code = "^1.1.0"
+pyexistdb = "^1.0.1"
 
 [tool.poetry.group.dev.dependencies]
 spacy = "^3.7.2"
@@ -41,4 +42,8 @@ build_greek_lit = [
     "download_greek_lit",
     { script = "os:makedirs('.tmp/xar', exist_ok=True)" },
     { cmd = "./hack/build_greek_lit_ant.sh .tmp/repos/canonical-greekLit .tmp/xar hack/_build_greek_lit_ant.sh" },
+]
+run_existdb = [
+    "build_greek_lit",
+    { cmd = "./hack/start_existdb_container.sh hack/existdb_files/Dockerfile .tmp/xar" },
 ]
